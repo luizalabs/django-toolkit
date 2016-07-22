@@ -5,3 +5,4 @@ help:  ## This help
 
 check:  ## Run static code checks
 	@flake8 .
+	@isort --check
