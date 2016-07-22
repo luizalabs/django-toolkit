@@ -11,7 +11,8 @@ setup(
     name='django_toolkit',
     version='0.0.0',
     description=(
-        'Our set of tools for develop projects using the Django framework'
+        'The LuizaLabs set of tools '
+        'to develop projects using the Django framework'
     ),
     long_description=read('README.rst'),
     author='LuizaLabs',
