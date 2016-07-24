@@ -1,0 +1,15 @@
+language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+
+cache:
+  directories:
+    - $HOME/.cache/pip
+
+install:
+  - pip install -r requirements-dev.txt
+
+script:
+  - make check
