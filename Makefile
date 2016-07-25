@@ -6,3 +6,6 @@ help:  ## This help
 check:  ## Run static code checks
 	@flake8 .
 	@isort --check
+
+test:  ## Run unit tests
+	@py.test -x tests/
