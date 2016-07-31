@@ -9,3 +9,6 @@ check:  ## Run static code checks
 
 test:  ## Run unit tests
 	@py.test -x tests/
+
+coverage:  ## Run unit tests and generate code coverage report
+	@py.test -x --cov django_toolkit/ --cov-report=xml --cov-report=term-missing tests/

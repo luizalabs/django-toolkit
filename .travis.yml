@@ -12,4 +12,8 @@ install:
   - pip install -r requirements-dev.txt
 
 script:
-  - make check test
+  - make check coverage
+
+after_success:
+  - pip install codecov
+  - codecov
