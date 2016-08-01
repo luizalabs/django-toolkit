@@ -3,4 +3,5 @@ flake8==2.6.2
 isort==4.2.5
 mkdocs==0.15.3
 mock==2.0.0
+pytest-cov==2.3.0
 pytest==2.9.2
