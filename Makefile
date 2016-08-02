@@ -19,3 +19,6 @@ test:  ## Run unit tests
 
 coverage:  ## Run unit tests and generate code coverage report
 	@py.test -x --cov django_toolkit/ --cov-report=xml --cov-report=term-missing tests/
+
+install:  ## Install development dependencies
+	@pip install -r requirements-dev.txt

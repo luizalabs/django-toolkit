@@ -4,4 +4,5 @@ isort==4.2.5
 mkdocs==0.15.3
 mock==2.0.0
 pytest-cov==2.3.0
+pytest-django==2.9.1
 pytest==2.9.2
