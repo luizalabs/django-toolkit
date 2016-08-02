@@ -7,3 +7,4 @@ projects using the Django Framework
 This package includes tools for:
 
 * [logs](logs)
+* [middlewares](middlewares)
