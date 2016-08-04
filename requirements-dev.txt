@@ -1,6 +1,9 @@
 -e .
+django-oauth-toolkit==0.10.0
+djangorestframework==3.4.1
 flake8==2.6.2
 isort==4.2.5
+mixer==5.5.7
 mkdocs==0.15.3
 mock==2.0.0
 pytest-cov==2.3.0
