@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 def read(fname):
@@ -21,7 +21,9 @@ setup(
     install_requires=[
         'Django>=1.8',
     ],
-    packages=['django_toolkit'],
+    packages=find_packages(exclude=[
+        'tests*'
+    ]),
     classifiers=[
         'Framework :: Django',
         'Intended Audience :: Developers',
