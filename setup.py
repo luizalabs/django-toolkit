@@ -8,14 +8,14 @@ def read(fname):
         return f.read()
 
 setup(
-    name='django_toolkit',
+    name='luizalabs-django-toolkit',
     version='0.0.0',
     description=(
         'The LuizaLabs set of tools '
         'to develop projects using the Django framework'
     ),
     long_description=read('README.rst'),
-    author='LuizaLabs',
+    author='Luizalabs',
     url='https://github.com/luizalabs/django-toolkit',
     keywords='django tools logs middleware utils',
     install_requires=[
