@@ -11,9 +11,9 @@ some helper functions to day-to-day development.
 
 `django_toolkit.shortcuts.get_oauth2_app`
 
-Return the Application object from a Django Rest Framework request when
-authenticated with a Django OAuth Toolkit access token, or return None when it
-is not.
+Return the Application object from a *Django Rest Framework* request when
+authenticated with a *Django OAuth Toolkit* access token, or return `None` when
+it is not.
 
 #### Arguments
 
