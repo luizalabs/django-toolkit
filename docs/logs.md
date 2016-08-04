@@ -23,7 +23,15 @@ with a [formatter][log-formatter].
 [log-formatter]: https://docs.python.org/3/library/logging.html#formatter-objects
 [log-record]: https://docs.python.org/3/library/logging.html#logrecord-objects
 
-Ex:
+
+### AddHostName
+
+Adds the `%(hostname)s` entry to the log record. Its `filter` method always
+return `True`, so that no log record is removed from the output by this filter.
+
+In order to use it, include a filter entry in your logging dictconfig.
+
+#### Example
 
 ```python
 LOGGING = {
@@ -35,25 +43,8 @@ LOGGING = {
     'formatters': {
         'simple': {
             'format': '%(hostname)s %(levelname)s %(name)s %(message)s'
-            # hostname is not a default LogRecord attribute
+            # hostname is now available
         },
-    },
-}
-```
-
-### AddHostName
-
-Adds the `%(hostname)s` entry to the log record. Its `filter` method always
-return `True`, so that no log record is removed from the output by this filter.
-
-In order to use it, include a filter entry in your logging dictconfig, like
-this:
-```python
-{
-    'filters': {
-        'add_hostname': {
-            '()': 'django_toolkit.logs.filters.AddHostName',
-        }
     },
 }
 ```
