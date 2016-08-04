@@ -1,19 +1,24 @@
 language: python
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-
+- '2.7'
+- '3.4'
+- '3.5'
 cache:
   directories:
-    - $HOME/.cache/pip
-
+  - $HOME/.cache/pip
 install:
-  - pip install -r requirements-dev.txt
-
+- pip install -r requirements-dev.txt
 script:
-  - make check coverage
-
+- make check coverage
 after_success:
-  - pip install codecov
-  - codecov
+- pip install codecov
+- codecov
+deploy:
+  provider: pypi
+  user: luizalabs
+  password:
+    secure: P0tYDziArYdHogReZ1x7z4DOR0s1YptI2F/dKWFShJLimQ0GtgAouZF4e2FdxgCdMfzJhZUQl6YXWrumqVbWmF/9R2BXeUQgJbPiK5dQkG5tPPLjXlFZ+9dktH86TerOgcLvXAQVFSkgtGbDHt7XOU43jg3u2UQGyezJnXqRg2mNRNC9oa2mAhIl4Qi4cZZ3V2CMJiz3z+dz3lJpKM5IyqSsCRsuC2piQqO1GsT3MiPZtVGM998n7Cc0zhKplo6+qzVsyobgEO+YnVOU55RYNzof81dtg5WwHeyTSB1oQwXq/8dTtMirLgTaC5qaPRCsnchUL7PX0ilJHI2KuiZwR+NVzQAJ5bZeN+cx5ITnKPKGxw0k0PNUko+q44aLb77kRWj54GQMYqUEIt/Xczw51FjAKECtchcwtXtZlebzN+hG9Y9K9PtYREe9Fki0z7XnSAbeNzBuZCQf0Nvbhot6iEYgDSdSWPVzu+qtHBhi2HNTvlpUgPl1riBxUkiuSwA1mQCTOHwvLDn0z/PS2Lk72aIF+6EO/Sa9tcI30zhLkRUEHn3/qRh46sOQBhmOM4lgtbdQNjda8I0yXH5OZzXUIWAdYKwPG6jHvri8Qkd1jxy0+G+44AfCrRR86j/Q63r78dOpBNxSrwzBBMhzdGLjRWV01nK5OWnkCYiw3Es/p2o=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: luizalabs/django-toolkit
