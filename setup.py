@@ -10,7 +10,7 @@ def read(fname):
 
 setup(
     name='luizalabs-django-toolkit',
-    version='0.0.0',
+    version='0.0.1',
     description=(
         'The LuizaLabs set of tools '
         'to develop projects using the Django framework'
