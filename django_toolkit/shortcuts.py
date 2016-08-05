@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 def get_oauth2_app(request):
     """
     Return the Application object from a Django Rest Framework request when

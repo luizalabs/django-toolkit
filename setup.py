@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 import os
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 def read(fname):
@@ -8,20 +9,22 @@ def read(fname):
         return f.read()
 
 setup(
-    name='django_toolkit',
+    name='luizalabs-django-toolkit',
     version='0.0.0',
     description=(
         'The LuizaLabs set of tools '
         'to develop projects using the Django framework'
     ),
     long_description=read('README.rst'),
-    author='LuizaLabs',
+    author='Luizalabs',
     url='https://github.com/luizalabs/django-toolkit',
     keywords='django tools logs middleware utils',
     install_requires=[
         'Django>=1.8',
     ],
-    packages=['django_toolkit'],
+    packages=find_packages(exclude=[
+        'tests*'
+    ]),
     classifiers=[
         'Framework :: Django',
         'Intended Audience :: Developers',

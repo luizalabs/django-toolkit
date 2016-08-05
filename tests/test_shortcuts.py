@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 from mixer.backend.django import mixer
 from oauth2_provider.models import AccessToken, Application

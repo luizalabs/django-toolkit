@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 SECRET_KEY = 'test'
 DATABASES = {
     'default': {
