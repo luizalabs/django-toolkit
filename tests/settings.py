@@ -21,6 +21,15 @@ REST_FRAMEWORK = {
     ),
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'locks': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
 TOOLKIT = {
     'API_VERSION': '1.2.3',
 }
