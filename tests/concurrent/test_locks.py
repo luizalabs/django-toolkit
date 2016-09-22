@@ -26,6 +26,12 @@ class TestLocalMemoryLock:
 
         assert not lock.active
 
+    def test_should_raise_exception_when_lock_is_already_active(self, lock):
+        with pytest.raises(LockActiveError):
+            with lock:
+                with lock:
+                    pass
+
 
 class TestCacheLock:
 

@@ -5,13 +5,13 @@ class LockActiveError(Exception):
     pass
 
 
-class BaseLock(object):
+class Lock(object):
 
     def __init__(self):
         self.active = False
 
 
-class LocalMemoryLock(BaseLock):
+class LocalMemoryLock(Lock):
     """
     A context manager to handle a lock status in memory
 
@@ -19,6 +19,10 @@ class LocalMemoryLock(BaseLock):
     """
 
     def __enter__(self):
+
+        if self.active:
+            raise LockActiveError('Lock is already active')
+
         self.active = True
         return self
 
@@ -26,7 +30,7 @@ class LocalMemoryLock(BaseLock):
         self.active = False
 
 
-class CacheLock(BaseLock):
+class CacheLock(Lock):
 
     def __init__(self, key, cache_alias='default', expire=0):
         super(CacheLock, self).__init__()
