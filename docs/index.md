@@ -6,6 +6,7 @@ projects using the [Django web framework][django-website].
 
 This package includes the utility modules:
 
+* [concurrent](concurrent)
 * [logs](logs)
 * [middlewares](middlewares)
 * [shortcuts](shortcuts)
