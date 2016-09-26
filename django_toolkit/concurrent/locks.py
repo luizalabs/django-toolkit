@@ -31,6 +31,13 @@ class LocalMemoryLock(Lock):
 
 
 class CacheLock(Lock):
+    """
+    A context manager to handle a lock status using Django cache
+
+    The active status is True on __enter__ and False on __exit__
+
+    The cache will be deleted on context __exit__
+    """
 
     def __init__(
         self,

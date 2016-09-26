@@ -2,7 +2,7 @@
 
 ## Locks
 
-The lock context are used to ensure that piece of code run only once.
+The lock context is used to indicate that a block of code entered in a [critical section](https://en.wikipedia.org/wiki/Critical_section).
 
 ### Local memory lock
 
@@ -22,7 +22,26 @@ def run(*args, **kwargs):
 ### Cache lock
 
 `CacheLock` uses django cache system and `default` cache alias by default.
-If the context of lock is `active`, by default, `LockActiveError` is raised.
+By default, the context manager raises `LockActiveError` when the lock was already active.
+
+#### Arguments
+
+`key`
+
+Cache key.
+
+`cache_alias`
+
+Django cache alias.
+
+`expire`
+
+Time in seconds to expire the cache.
+
+`raise_exception`
+
+Condition to raise `LockActiveError` when lock was already active.
+
 
 #### Example
 
