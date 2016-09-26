@@ -50,3 +50,11 @@ class TestCacheLock:
             with CacheLock(key='test', expire=1000):
                 with CacheLock(key='test'):
                     pass
+
+    def test_should_not_raise_exception_when_raise_exception_is_false(self):
+        with CacheLock(key='test', expire=1000) as lock:
+            assert lock.active is True
+
+            with CacheLock(key='test', raise_exception=False) as lock:
+                assert lock.active is True
+                pass

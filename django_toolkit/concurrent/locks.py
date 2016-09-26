@@ -32,18 +32,26 @@ class LocalMemoryLock(Lock):
 
 class CacheLock(Lock):
 
-    def __init__(self, key, cache_alias='default', expire=0):
+    def __init__(
+        self,
+        key,
+        cache_alias='default',
+        expire=0,
+        raise_exception=True
+    ):
         super(CacheLock, self).__init__()
         self._key = key
         self._expire = expire
         self.cache = caches[cache_alias]
+        self.raise_exception = raise_exception
 
     def __enter__(self):
         self.active = self.cache.add(self._key, True, self._expire)
 
-        if not self.active:
+        if not self.active and self.raise_exception:
             raise LockActiveError('For key {key}'.format(key=self._key))
 
+        self.active = True
         return self
 
     def __exit__(self, *args, **kwargs):
