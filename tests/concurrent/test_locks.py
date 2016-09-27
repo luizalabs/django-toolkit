@@ -56,5 +56,4 @@ class TestCacheLock:
             assert lock.active is True
 
             with CacheLock(key='test', raise_exception=False) as lock:
-                assert lock.active is True
-                pass
+                assert lock.active is False

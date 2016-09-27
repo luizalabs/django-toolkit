@@ -58,7 +58,6 @@ class CacheLock(Lock):
         if not self.active and self.raise_exception:
             raise LockActiveError('For key {key}'.format(key=self._key))
 
-        self.active = True
         return self
 
     def __exit__(self, *args, **kwargs):
