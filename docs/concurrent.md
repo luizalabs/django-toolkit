@@ -65,7 +65,7 @@ from django_toolkit.concurrent.locks import CacheLock
 
 def run(*args, **kwargs):
     with CacheLock(key='key') as lock:
-        assert lock.is_active
+        assert lock.active
         # do some stuff
 ```
 
@@ -80,17 +80,19 @@ def run(*args, **kwargs):
 ```
 
 You can control lock to don't raise `LockActiveError` exception.
+The attribute `active` will indicate whether lock acquiring was successful or
+not.
 
 ```python
 from django_toolkit.concurrent.locks import CacheLock
 
 def run(*args, **kwargs):
     with CacheLock(key='key', raise_exception=False) as lock:
-        assert lock.is_active
+        assert lock.active
 
     with CacheLock(key='key', raise_exception=False) as lock:
-        if lock.is_active:
-            # do some stuff
+        if lock.active:
+            # do some stuff, lock is now active
         else:
-            # do some stuff
+            # do other stuff, lock was not acquired
 ```
