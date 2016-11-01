@@ -10,5 +10,6 @@ This package includes the utility modules:
 * [logs](logs)
 * [middlewares](middlewares)
 * [shortcuts](shortcuts)
+* [fallbacks](fallbacks)
 
 [django-website]: https://www.djangoproject.com/
