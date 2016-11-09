@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+
 from setuptools import find_packages, setup
 
 
@@ -22,6 +23,9 @@ setup(
     install_requires=[
         'Django>=1.8',
     ],
+    extra_requires={
+        'oauth2': ['django-oauth-toolkit'],
+    },
     packages=find_packages(exclude=[
         'tests*'
     ]),
