@@ -20,3 +20,14 @@ Middlewares must be [registered][register-middleware] in the Django's
 
 Adds a `X-API-Version` header to the Django's response. In order to use this
 middleware, you should fill the `API_VERSION` key in the `TOOLKIT` setting.
+
+
+### AccessLogMiddleware
+
+`django_toolkit.middlewares.AccessLogMiddleware`
+
+Create an access log entry with this format:
+
+```
+[{app_name}] {response.status_code} {request.method} {request.path}
+```
