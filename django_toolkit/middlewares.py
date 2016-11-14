@@ -5,10 +5,16 @@ from django.conf import settings
 
 from .shortcuts import get_oauth2_app
 
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    MiddlewareMixin = object
+
+
 logger = logging.getLogger(__name__)
 
 
-class VersionHeaderMiddleware(object):
+class VersionHeaderMiddleware(MiddlewareMixin):
     """
     Add a X-API-Version header to the response. The version is taken from
     TOOLKIT['API_VERSION'] setting.
@@ -19,7 +25,7 @@ class VersionHeaderMiddleware(object):
         return response
 
 
-class AccessLogMiddleware(object):
+class AccessLogMiddleware(MiddlewareMixin):
 
     LOG_FORMAT = (
         u'[{app_name}] '
