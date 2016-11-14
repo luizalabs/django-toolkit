@@ -5,7 +5,7 @@ Middlewares
 It’s a light, low-level “plugin” system for globally altering Django’s input
 or output.
 >
->&mdash; [Python Docs][cite]
+>&mdash; [Django Docs][cite]
 
 [cite]: https://docs.djangoproject.com/pt-br/1.9/topics/http/middleware/
 
@@ -26,7 +26,7 @@ middleware, you should fill the `API_VERSION` key in the `TOOLKIT` setting.
 
 `django_toolkit.middlewares.AccessLogMiddleware`
 
-Create an access log entry with this format:
+Creates an access log entry with this format:
 
 ```
 [{app_name}] {response.status_code} {request.method} {request.path}
