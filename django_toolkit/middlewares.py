@@ -2,7 +2,7 @@
 import logging
 
 from .shortcuts import get_oauth2_app
-from .toolkit_settings import API_VERSION
+from .toolkit_settings import API_VERSION, MIDDLEWARE_ACCESS_LOG_FORMAT
 
 try:
     from django.utils.deprecation import MiddlewareMixin
@@ -26,23 +26,18 @@ class VersionHeaderMiddleware(MiddlewareMixin):
 
 class AccessLogMiddleware(MiddlewareMixin):
 
-    LOG_FORMAT = (
-        u'[{app_name}] '
-        u'{response.status_code} {request.method} {request.path}'
-    )
-
+    LOG_FORMAT = MIDDLEWARE_ACCESS_LOG_FORMAT
     UNKNOWN_APP_NAME = 'unknown'
 
     def process_response(self, request, response):
         app = get_oauth2_app(request)
-        app_name = self.UNKNOWN_APP_NAME
 
-        if app:
-            app_name = app.name
+        app_name = getattr(app, 'name', self.UNKNOWN_APP_NAME)
 
         logger.info(
             self.LOG_FORMAT.format(app_name=app_name,
                                    request=request,
                                    response=response)
         )
+
         return response

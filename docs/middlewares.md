@@ -31,3 +31,12 @@ Creates an access log entry with this format:
 ```
 [{app_name}] {response.status_code} {request.method} {request.path}
 ```
+
+You can specify the log format in the `TOOLKIT` settings variable.
+Example:
+
+```python
+# toolkit settings
+TOOLKIT = {
+    'MIDDLEWARE_ACCESS_LOG_FORMAT': '{app_name} {request.method} {response.status_code}'
+}
