@@ -7,9 +7,10 @@ projects using the [Django web framework][django-website].
 This package includes the utility modules:
 
 * [concurrent](concurrent)
+* [fallbacks](fallbacks)
 * [logs](logs)
 * [middlewares](middlewares)
+* [oauth2](oauth2)
 * [shortcuts](shortcuts)
-* [fallbacks](fallbacks)
 
 [django-website]: https://www.djangoproject.com/

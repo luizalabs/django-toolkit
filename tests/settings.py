@@ -13,6 +13,8 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'oauth2_provider',
+
+    'django_toolkit.oauth2',
 )
 
 REST_FRAMEWORK = {
@@ -26,6 +28,9 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     },
     'locks': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'access_token': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
