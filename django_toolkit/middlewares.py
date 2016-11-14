@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.conf import settings
-
 from .shortcuts import get_oauth2_app
+from .toolkit_settings import API_VERSION
 
 try:
     from django.utils.deprecation import MiddlewareMixin
@@ -21,7 +20,7 @@ class VersionHeaderMiddleware(MiddlewareMixin):
     """
 
     def process_response(self, request, response):
-        response['X-API-Version'] = settings.TOOLKIT['API_VERSION']
+        response['X-API-Version'] = API_VERSION
         return response
 
 

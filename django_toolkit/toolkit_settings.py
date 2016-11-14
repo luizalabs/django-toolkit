@@ -6,3 +6,5 @@ ACCESS_TOKEN_CACHE_BACKEND = _toolkit_settings.get(
     'ACCESS_TOKEN_CACHE_BACKEND',
     'access_token'
 )
+
+API_VERSION = _toolkit_settings.get('API_VERSION')
