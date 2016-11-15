@@ -14,7 +14,7 @@ check:  ## Run static code checks
 	@flake8 .
 	@isort --check
 
-test:  ## Run unit tests
+test: clean ## Run unit tests
 	@py.test -x tests/
 
 coverage:  ## Run unit tests and generate code coverage report

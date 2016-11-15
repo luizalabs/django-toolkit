@@ -1,12 +1,12 @@
 -e .
 bumpversion==0.5.3
 django-oauth-toolkit==0.10.0
-djangorestframework==3.5.2
+djangorestframework==3.5.3
 flake8==3.0.4
 isort==4.2.5
 mixer==5.5.8
-mkdocs==0.15.3
+mkdocs==0.16.0
 mock==2.0.0
 pytest-cov==2.4.0
 pytest-django==3.0.0
-pytest==3.0.3
+pytest==3.0.4
