@@ -34,14 +34,14 @@ class CircuitBreaker:
         return self.cache.get(self.failure_cache_key) or 0
 
     def open_circuit(self):
+        self.cache.set(self.circuit_cache_key, True, self.circuit_timeout)
+
         logger.critical(
             'Open circuit for {failure_cache_key} {cicuit_cache_key}'.format(
                 failure_cache_key=self.failure_cache_key,
                 cicuit_cache_key=self.circuit_cache_key
             )
         )
-
-        self.cache.set(self.circuit_cache_key, True, self.circuit_timeout)
 
     def __enter__(self):
         if self.is_circuit_open:
