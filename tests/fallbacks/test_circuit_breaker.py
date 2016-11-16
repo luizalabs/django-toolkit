@@ -78,7 +78,6 @@ class TestCircuitBreaker:
         assert cache.get(failure_cache_key, 2)
 
     def test_should_raise_exception_when_circuit_is_open(self):
-
         cache.set('circuit_circuit_open', True)
 
         with pytest.raises(MyException):
@@ -92,3 +91,26 @@ class TestCircuitBreaker:
                 success_function()
 
             assert circuit_breaker.is_circuit_open
+
+    def test_should_not_increment_fail_when_circuit_is_open(self):
+        """
+        It should not increment fail count over the max failures limit, when
+        circuit breaker is open after a successful enter.
+        """
+        failure_cache_key = 'fail_count'
+        max_failures = 10
+
+        with pytest.raises(MyException):
+            with CircuitBreaker(
+                cache=cache,
+                failure_cache_key=failure_cache_key,
+                max_failures=max_failures,
+                max_failure_exception=MyException,
+                catch_exceptions=(ValueError,),
+            ) as circuit_breaker:
+                cache.set(failure_cache_key, max_failures)
+                circuit_breaker.open_circuit()
+
+                fail_function()
+
+        assert cache.get(failure_cache_key) == max_failures
