@@ -18,6 +18,7 @@ setup(
     ),
     long_description=read('README.rst'),
     author='Luizalabs',
+    author_email='pypi@luizalabs.com',
     url='https://github.com/luizalabs/django-toolkit',
     keywords='django tools logs middleware utils',
     install_requires=[
