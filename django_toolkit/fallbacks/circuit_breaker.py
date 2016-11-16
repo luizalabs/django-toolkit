@@ -47,6 +47,8 @@ class CircuitBreaker:
         if self.is_circuit_open:
             raise self.max_failure_exception
 
+        return self
+
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type in self.catch_exceptions:
 
