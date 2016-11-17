@@ -20,11 +20,11 @@ Maximum number of errors.
 
 `max_failure_exception`
 
-Exception raised when exceded maximum number of errors and when circuit is open.
+Exception to be raised when it exceeds the maximum number of errors and when the circuit is open.
 
 `max_failure_timeout`
 
-This value is set on first error. It is used to validate number of errors by time.
+This value is set on first error. It is used to validate the number of errors by time.
 
 `circuit_timeout`
 
@@ -32,7 +32,7 @@ Time that the circuit will be open.
 
 `catch_exceptions`
 
-List of exception that is catched to incrase number of errors.
+List of exceptions catched to increase the number of errors.
 
 
 #### Example
