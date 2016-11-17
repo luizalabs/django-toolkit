@@ -18,12 +18,13 @@ setup(
     ),
     long_description=read('README.rst'),
     author='Luizalabs',
+    author_email='pypi@luizalabs.com',
     url='https://github.com/luizalabs/django-toolkit',
     keywords='django tools logs middleware utils',
     install_requires=[
         'Django>=1.8',
     ],
-    extra_requires={
+    extras_require={
         'oauth2': ['django-oauth-toolkit'],
     },
     packages=find_packages(exclude=[
