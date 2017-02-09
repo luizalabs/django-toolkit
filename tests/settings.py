@@ -32,7 +32,11 @@ CACHES = {
     },
     'access_token': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    }
+    },
+    'explicit_timeout': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 300,
+    },
 }
 
 TOOLKIT = {

@@ -37,6 +37,7 @@ Django cache alias.
 `expire`
 
 Time in seconds to expire the cache.
+This argument defaults to the backend timeout configuration.
 
 `raise_exception`
 
