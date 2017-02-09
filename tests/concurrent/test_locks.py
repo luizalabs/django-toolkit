@@ -57,3 +57,11 @@ class TestCacheLock:
 
             with CacheLock(key='test', raise_exception=False) as lock:
                 assert lock.active is False
+
+    def test_should_use_default_cache_timeout_when_expire_is_not_given(self):
+        with CacheLock(cache_alias='explicit_timeout', key='test') as lock:
+            assert lock.cache.get(lock._key)
+
+    def test_should_expire_immediately_when_expire_is_zero(self):
+        with CacheLock(key='test', expire=0) as lock:
+            assert not lock.cache.get(lock._key)

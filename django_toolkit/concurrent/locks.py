@@ -1,4 +1,5 @@
 from django.core.cache import caches
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
 
 
 class LockActiveError(Exception):
@@ -43,7 +44,7 @@ class CacheLock(Lock):
         self,
         key,
         cache_alias='default',
-        expire=0,
+        expire=DEFAULT_TIMEOUT,
         raise_exception=True
     ):
         super(CacheLock, self).__init__()
