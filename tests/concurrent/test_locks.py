@@ -65,3 +65,26 @@ class TestCacheLock:
     def test_should_expire_immediately_when_expire_is_zero(self):
         with CacheLock(key='test', expire=0) as lock:
             assert not lock.cache.get(lock._key)
+
+    def test_should_not_release_when_lock_is_already_acquired(self):
+        """
+        It should release the lock only if it was acquired successfully.
+        A lock that do not acquired a lock should not release it.
+        """
+        with CacheLock(key='test', raise_exception=False) as lock:
+            with CacheLock(key='test', raise_exception=False):
+                pass
+
+            assert lock.cache.get(lock._key)
+
+        assert not lock.cache.get(lock._key)
+
+    def test_should_not_release_when_lock_when_lock_active_error_is_raised(
+        self
+    ):
+        with CacheLock(key='test') as lock:
+            with pytest.raises(LockActiveError):
+                with CacheLock(key='test'):
+                    pass
+
+            assert lock.cache.get(lock._key)

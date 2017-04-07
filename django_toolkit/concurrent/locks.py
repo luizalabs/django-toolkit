@@ -62,5 +62,7 @@ class CacheLock(Lock):
         return self
 
     def __exit__(self, *args, **kwargs):
+        if self.active:
+            self.cache.delete(self._key)
+
         self.active = False
-        self.cache.delete(self._key)
