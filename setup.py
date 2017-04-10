@@ -9,6 +9,7 @@ def read(fname):
     with open(path) as f:
         return f.read()
 
+
 setup(
     name='luizalabs-django-toolkit',
     version='1.3.5',

@@ -2,9 +2,9 @@
 from datetime import timedelta
 
 import pytest
+from django.contrib.auth import get_user_model
 from django.core.cache import caches
 from django.utils import timezone
-from oauth2_provider.compat import get_user_model
 from oauth2_provider.models import AccessToken, get_application_model
 
 
