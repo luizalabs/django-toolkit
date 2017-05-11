@@ -11,6 +11,9 @@ cache = caches[toolkit_settings.ACCESS_TOKEN_CACHE_BACKEND]
 
 class CachedOAuth2Validator(OAuth2Validator):
 
+    def get_queryset(self):
+        return AccessToken.objects.select_related('application', 'user')
+
     def validate_bearer_token(self, token, scopes, request):
         if not token:
             return False
@@ -33,10 +36,7 @@ class CachedOAuth2Validator(OAuth2Validator):
         access_token = cache.get(token)
 
         if access_token is None:
-            access_token = AccessToken.objects.select_related(
-                'application',
-                'user'
-            ).get(
+            access_token = self.get_queryset().get(
                 token=token
             )
             now = timezone.now()

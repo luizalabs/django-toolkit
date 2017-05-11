@@ -36,3 +36,27 @@ CACHES = {
     }
 }
 ```
+
+If you want to provide a custom queryset, you can subclass `CachedOAuth2Validator`
+and override the `get_queryset` method.
+
+Example (Python 3):
+
+```python
+# custom_validator.py
+from oauth2_provider.models import AccessToken
+
+from django_toolkit.oauth2.validators import CachedOAuth2Validator
+
+class CustomOAuth2QuerySetValidator(CachedOAuth2Validator):
+
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related(
+            'application__custom_table'
+        )
+
+# settings
+OAUTH2_PROVIDER = {
+    'OAUTH2_VALIDATOR_CLASS': 'custom_validator.CustomOAuth2QuerySetValidator',
+}
+```
