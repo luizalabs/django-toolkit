@@ -3,8 +3,10 @@ from datetime import timedelta
 
 import pytest
 from django.db import connection
+from django.db.models.query import QuerySet
 from django.test.utils import CaptureQueriesContext
 from django.utils import timezone
+from oauth2_provider.models import AccessToken
 
 from django_toolkit.oauth2.validators import CachedOAuth2Validator
 
@@ -127,3 +129,12 @@ class TestCachedOAuth2Validator(object):
             http_request
         )
         assert not is_valid
+
+    def test_get_queryset_should_return_an_access_token_queryset(
+        self,
+        validator,
+    ):
+        queryset = validator.get_queryset()
+
+        assert isinstance(queryset, QuerySet)
+        assert queryset.model == AccessToken
