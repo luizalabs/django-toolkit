@@ -36,6 +36,11 @@ class CircuitBreaker:
     def open_circuit(self):
         self.cache.set(self.circuit_cache_key, True, self.circuit_timeout)
 
+        # Delete the cache key to mitigate multiple sequentials openings
+        # when a key is created accidentally without timeout (from an incr
+        # operation)
+        self.cache.delete(self.failure_cache_key)
+
         logger.critical(
             'Open circuit for {failure_cache_key} {cicuit_cache_key}'.format(
                 failure_cache_key=self.failure_cache_key,
@@ -68,6 +73,8 @@ class CircuitBreaker:
                 raise self.max_failure_exception
 
     def _increase_failure_count(self):
+        # Between the cache.add and cache.incr, the cache MAY expire,
+        # which will lead to a circuit that will eventually open
         self.cache.add(self.failure_cache_key, 0, self.max_failure_timeout)
         total = self.cache.incr(self.failure_cache_key)
 
