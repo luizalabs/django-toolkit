@@ -20,6 +20,10 @@ def fail_function():
 
 class TestCircuitBreaker:
 
+    @pytest.fixture(autouse=True)
+    def clear_cache(self):
+        cache.clear()
+
     def test_success_result(self):
         with CircuitBreaker(
             cache=cache,
@@ -113,4 +117,23 @@ class TestCircuitBreaker:
 
                 fail_function()
 
-        assert cache.get(failure_cache_key) == max_failures
+        assert not cache.get(failure_cache_key)
+
+    def test_should_delete_count_key_when_circuit_is_open(self):
+        failure_cache_key = 'circuit'
+
+        cache.set(failure_cache_key, 1)
+
+        with pytest.raises(MyException):
+            with CircuitBreaker(
+                cache=cache,
+                failure_cache_key=failure_cache_key,
+                max_failures=2,
+                max_failure_exception=MyException,
+                catch_exceptions=(ValueError,),
+            ) as circuit_breaker:
+                fail_function()
+
+            assert circuit_breaker.is_circuit_open
+
+        assert cache.get(failure_cache_key) is None
