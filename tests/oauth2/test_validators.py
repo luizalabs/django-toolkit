@@ -6,8 +6,8 @@ from django.db import connection
 from django.db.models.query import QuerySet
 from django.test.utils import CaptureQueriesContext
 from django.utils import timezone
-from oauth2_provider.models import AccessToken
 
+from django_toolkit.oauth2.compat import AccessToken
 from django_toolkit.oauth2.validators import CachedOAuth2Validator
 
 

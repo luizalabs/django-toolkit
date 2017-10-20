@@ -10,15 +10,19 @@ cache:
     - $HOME/.cache/pip
 
 install:
-  - pip install "$DJANGO"
+  - pip install "$DEPENDENCIES"
   - pip install -r requirements-dev.txt
 
 env:
   matrix:
-   - DJANGO="Django<1.9"
-   - DJANGO="Django<1.10"
-   - DJANGO="Django<1.11"
-   - DJANGO="Django<1.12"
+   - DEPENDENCIES="'Django<1.9' 'django-oauth-toolkit<1.0.0'"
+   - DEPENDENCIES="'Django<1.9' 'django-oauth-toolkit<1.1.0'"
+   - DEPENDENCIES="'Django<1.10' 'django-oauth-toolkit<1.0.0'"
+   - DEPENDENCIES="'Django<1.10' 'django-oauth-toolkit<1.1.0'"
+   - DEPENDENCIES="'Django<1.11' 'django-oauth-toolkit<1.0.0'"
+   - DEPENDENCIES="'Django<1.11' 'django-oauth-toolkit<1.1.0'"
+   - DEPENDENCIES="'Django<1.12' 'django-oauth-toolkit<1.0.0'"
+   - DEPENDENCIES="'Django<1.12' 'django-oauth-toolkit<1.1.0'"
 
 script:
   - make check coverage

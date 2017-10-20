@@ -1,6 +1,5 @@
 -e .
 bumpversion==0.5.3
-django-oauth-toolkit==0.12.0
 djangorestframework==3.6.2
 flake8==3.3.0
 isort==4.2.5

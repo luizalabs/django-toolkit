@@ -1,19 +1,26 @@
 # -*- coding: utf-8 -*-
 import pytest
 from mixer.backend.django import mixer
-from oauth2_provider.models import AccessToken, Application
+from oauth2_provider.models import get_application_model
 from rest_framework.request import Request
 from rest_framework.test import APIRequestFactory, force_authenticate
 
 from django_toolkit import shortcuts
+from django_toolkit.oauth2.compat import AccessToken
+
+Application = get_application_model()
 
 
 @pytest.mark.django_db
 class TestGetCurrentApp(object):
 
     @pytest.fixture
-    def token(self):
-        return mixer.blend(AccessToken)
+    def application(self):
+        return mixer.blend(Application)
+
+    @pytest.fixture
+    def token(self, application):
+        return mixer.blend(AccessToken, application=application)
 
     def test_should_return_the_client_applicaton(self, token):
         factory = APIRequestFactory()

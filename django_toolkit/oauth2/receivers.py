@@ -2,9 +2,10 @@
 from django.core.cache import caches
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
-from oauth2_provider.models import AccessToken
 
 from django_toolkit import toolkit_settings
+
+from .compat import AccessToken
 
 cache = caches[toolkit_settings.ACCESS_TOKEN_CACHE_BACKEND]
 
