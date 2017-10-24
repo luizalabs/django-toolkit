@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 import logging
 
+from django.utils.deprecation import MiddlewareMixin
+
 from .shortcuts import get_oauth2_app
 from .toolkit_settings import API_VERSION, MIDDLEWARE_ACCESS_LOG_FORMAT
-
-try:
-    from django.utils.deprecation import MiddlewareMixin
-except ImportError:
-    MiddlewareMixin = object
 
 
 logger = logging.getLogger(__name__)

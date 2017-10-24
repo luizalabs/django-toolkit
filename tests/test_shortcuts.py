@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 import pytest
 from mixer.backend.django import mixer
-from oauth2_provider.models import get_application_model
+from oauth2_provider.models import (
+    get_access_token_model,
+    get_application_model
+)
 from rest_framework.request import Request
 from rest_framework.test import APIRequestFactory, force_authenticate
 
 from django_toolkit import shortcuts
-from django_toolkit.oauth2.compat import AccessToken
 
 Application = get_application_model()
+AccessToken = get_access_token_model()
 
 
 @pytest.mark.django_db

@@ -5,9 +5,10 @@ import pytest
 from django.contrib.auth import get_user_model
 from django.core.cache import caches
 from django.utils import timezone
-from oauth2_provider.models import get_application_model
-
-from django_toolkit.oauth2.compat import AccessToken
+from oauth2_provider.models import (
+    get_access_token_model,
+    get_application_model
+)
 
 
 @pytest.fixture(autouse=True)
@@ -51,6 +52,7 @@ def application(user):
 
 @pytest.fixture
 def access_token(application, scopes):
+    AccessToken = get_access_token_model()
     return AccessToken.objects.create(
         scope=' '.join(scopes),
         expires=timezone.now() + timedelta(seconds=300),
