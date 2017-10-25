@@ -6,7 +6,6 @@ from django.utils.deprecation import MiddlewareMixin
 from .shortcuts import get_oauth2_app
 from .toolkit_settings import API_VERSION, MIDDLEWARE_ACCESS_LOG_FORMAT
 
-
 logger = logging.getLogger(__name__)
 
 
