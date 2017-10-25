@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.core.cache import caches
 from django.utils import timezone
-from oauth2_provider.models import AccessToken
+from oauth2_provider.models import get_access_token_model
 from oauth2_provider.oauth2_validators import OAuth2Validator
 
 from django_toolkit import toolkit_settings
 
 cache = caches[toolkit_settings.ACCESS_TOKEN_CACHE_BACKEND]
+AccessToken = get_access_token_model()
 
 
 class CachedOAuth2Validator(OAuth2Validator):

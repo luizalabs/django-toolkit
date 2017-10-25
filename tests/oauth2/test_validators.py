@@ -6,7 +6,7 @@ from django.db import connection
 from django.db.models.query import QuerySet
 from django.test.utils import CaptureQueriesContext
 from django.utils import timezone
-from oauth2_provider.models import AccessToken
+from oauth2_provider.models import get_access_token_model
 
 from django_toolkit.oauth2.validators import CachedOAuth2Validator
 
@@ -137,4 +137,4 @@ class TestCachedOAuth2Validator(object):
         queryset = validator.get_queryset()
 
         assert isinstance(queryset, QuerySet)
-        assert queryset.model == AccessToken
+        assert queryset.model == get_access_token_model()

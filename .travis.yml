@@ -15,10 +15,8 @@ install:
 
 env:
   matrix:
-   - DJANGO="Django<1.9"
-   - DJANGO="Django<1.10"
-   - DJANGO="Django<1.11"
-   - DJANGO="Django<1.12"
+    - DJANGO="Django<1.11"
+    - DJANGO="Django<1.12"
 
 script:
   - make check coverage

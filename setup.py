@@ -26,7 +26,7 @@ setup(
         'Django>=1.8',
     ],
     extras_require={
-        'oauth2': ['django-oauth-toolkit'],
+        'oauth2': ['django-oauth-toolkit==1.0.0'],
     },
     packages=find_packages(exclude=[
         'tests*'
