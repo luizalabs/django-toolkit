@@ -45,13 +45,15 @@ class CacheLock(Lock):
         key,
         cache_alias='default',
         expire=DEFAULT_TIMEOUT,
-        raise_exception=True
+        raise_exception=True,
+        delete_on_exit=True
     ):
         super(CacheLock, self).__init__()
         self._key = key
         self._expire = expire
         self.cache = caches[cache_alias]
         self.raise_exception = raise_exception
+        self.delete_on_exit = delete_on_exit
 
     def __enter__(self):
         self.active = self.cache.add(self._key, True, self._expire)
@@ -62,7 +64,7 @@ class CacheLock(Lock):
         return self
 
     def __exit__(self, *args, **kwargs):
-        if self.active:
+        if self.active and self.delete_on_exit:
             self.cache.delete(self._key)
 
         self.active = False
