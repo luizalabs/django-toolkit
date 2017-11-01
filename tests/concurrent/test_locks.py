@@ -93,7 +93,7 @@ class TestCacheLock:
         self
     ):
         with CacheLock(key='test_persist', delete_on_exit=False) as lock:
-            pass
+            assert lock.active
         assert lock.cache.get(lock._key)
 
     def test_should_release_lock_when_delete_on_exit_is_true(
