@@ -43,6 +43,10 @@ This argument defaults to the backend timeout configuration.
 
 Condition to raise `LockActiveError` when lock was already active.
 
+`delete_on_exit`
+
+By default the value of this argument is `True` to have the default `CacheLock` behavior
+When set to `False`, the lock persists during the key expiration time in the cache
 
 #### Example
 
@@ -96,4 +100,16 @@ def run(*args, **kwargs):
             # do some stuff, lock is now active
         else:
             # do other stuff, lock was not acquired
+```
+
+You can persist the lock in the cache by setting delete_on_exit = False. 
+This makes the key remains in cache until the end expiration time
+
+```python
+from django_toolkit.concurrent.locks import CacheLock
+
+def run(*args, **kwargs):
+    with CacheLock(key='key', delete_on_exit=False) as lock:
+        assert lock.active
+    assert lock.cache.get(lock._key)
 ```
