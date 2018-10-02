@@ -13,3 +13,21 @@ class AddHostName(logging.Filter):
     def filter(self, record):
         record.hostname = self.hostname
         return True
+
+
+class IgnoreIfContains(logging.Filter):
+    """
+    Ignore log record if message entry contains any substring set on
+    log filter configuration.
+    """
+
+    def __init__(self, substrings=None):
+        self.substrings = substrings or []
+
+    def filter(self, record):
+        message = record.getMessage()
+
+        return not any(
+            substring in message
+            for substring in self.substrings
+        )

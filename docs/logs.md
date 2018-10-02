@@ -48,3 +48,33 @@ LOGGING = {
     },
 }
 ```
+
+### IgnoreIfContains
+
+Ignore log record if message entry contains any substring set on log filter configuration.
+
+In order to use it, include a filter entry in your logging dictconfig.
+
+#### Example
+
+```python
+LOGGING = {
+        'version': 1,
+        'filters': {
+            'ignore_if_contains': {
+                '()': 'django_toolkit.logs.filters.IgnoreIfContains',
+                'substrings': ['/ping', '/healthcheck'],
+            }
+        },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'filters': ['ignore_if_contains']
+            }
+        },
+        'root': {
+            'level': 'DEBUG',
+            'handlers': ['console']
+        },
+    }
+```
