@@ -27,7 +27,7 @@ class IgnoreIfContains(logging.Filter):
     def filter(self, record):
         message = record.getMessage()
 
-        return not any([
+        return not any(
             substring in message
             for substring in self.substrings
-        ])
+        )
