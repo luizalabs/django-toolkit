@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
-from mixer.backend.django import mixer
+from model_mommy import mommy
 from oauth2_provider.models import (
     get_access_token_model,
     get_application_model
@@ -19,11 +19,11 @@ class TestGetCurrentApp(object):
 
     @pytest.fixture
     def application(self):
-        return mixer.blend(Application)
+        return mommy.make(Application)
 
     @pytest.fixture
     def token(self, application):
-        return mixer.blend(AccessToken, application=application)
+        return mommy.make(AccessToken, application=application)
 
     def test_should_return_the_client_applicaton(self, token):
         factory = APIRequestFactory()
