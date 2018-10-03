@@ -22,3 +22,6 @@ coverage:  ## Run unit tests and generate code coverage report
 
 install:  ## Install development dependencies
 	@pip install -r requirements-dev.txt
+
+outdate:
+	@pip list --outdated --format=columns ## Show outdated dependencies
