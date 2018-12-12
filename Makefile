@@ -25,3 +25,6 @@ install:  ## Install development dependencies
 
 outdate:
 	@pip list --outdated --format=columns ## Show outdated dependencies
+
+test-matching: clean
+	@py.test -k $(Q) tests/ -s

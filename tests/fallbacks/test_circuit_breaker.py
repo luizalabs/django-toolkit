@@ -137,3 +137,132 @@ class TestCircuitBreaker:
             assert circuit_breaker.is_circuit_open
 
         assert cache.get(failure_cache_key) is None
+
+    @pytest.mark.parametrize(
+        (
+            'failures_by_percentage,max_percentage_failures,'
+            'max_accepted_failures,max_failures'
+        ),
+        [
+            (False, 10, 20, None),
+            (True, None, 10, 0),
+            (True, 10, None, 0),
+        ]
+    )
+    def test_should_raise_value_error_with_invalid_arguments(
+        self,
+        failures_by_percentage,
+        max_percentage_failures,
+        max_accepted_failures,
+        max_failures
+    ):
+        with pytest.raises(ValueError):
+            with CircuitBreaker(
+                cache=cache,
+                failure_cache_key='fail',
+                max_failure_exception=MyException,
+                catch_exceptions=(ValueError,),
+                failures_by_percentage=failures_by_percentage,
+                max_percentage_failures=max_percentage_failures,
+                max_accepted_failures=max_accepted_failures,
+                max_failures=max_failures,
+            ):
+                success_function()
+
+    def test_should_not_open_circuit_with_accepted_number_of_failures(
+        self
+    ):
+        try:
+            with CircuitBreaker(
+                cache=cache,
+                failure_cache_key='fail',
+                failures_by_percentage=True,
+                max_percentage_failures=50,
+                max_accepted_failures=1,
+                max_failure_exception=MyException,
+                catch_exceptions=(ValueError,),
+            ) as circuit_breaker:
+                try:
+                    fail_function()
+                except ValueError:
+                    pass
+
+        except MyException as e:
+            pytest.fail('It should not have raised: {}'.format(e))
+
+        assert circuit_breaker.is_circuit_open is False
+
+    def test_should_open_circuit_by_percentage(
+        self
+    ):
+        def call_with_circuit(should_success):
+            with CircuitBreaker(
+                cache=cache,
+                failure_cache_key='fail',
+                failures_by_percentage=True,
+                max_percentage_failures=50,
+                max_accepted_failures=2,
+                max_failure_exception=MyException,
+                catch_exceptions=(ValueError,),
+            ):
+                if should_success:
+                    success_function()
+                else:
+                    fail_function()
+
+        call_with_circuit(should_success=True)
+        call_with_circuit(should_success=True)
+        try:
+            call_with_circuit(should_success=False)
+        except ValueError:
+            pass
+
+        try:
+            call_with_circuit(should_success=False)
+        except ValueError:
+            pass
+
+        with pytest.raises(MyException):
+            call_with_circuit(should_success=False)
+
+        with pytest.raises(MyException):
+            call_with_circuit(should_success=True)
+
+    def test_should_increase_request_cache_count(self):
+        with CircuitBreaker(
+            cache=cache,
+            failure_cache_key='fail_count',
+            failures_by_percentage=True,
+            max_percentage_failures=10,
+            max_accepted_failures=0,
+            max_failure_exception=MyException,
+            catch_exceptions=(ValueError,),
+        ) as circuit_breaker:
+            success_function()
+
+        assert cache.get(circuit_breaker.request_cache_key) > 0
+
+    def test_should_not_increment_request_when_circuit_is_open(self):
+        """
+        It should not increment request count over the max failures limit, when
+        circuit breaker is open after a successful enter.
+        """
+        failure_cache_key = 'fail_count'
+        max_failures = 10
+
+        with pytest.raises(MyException):
+            with CircuitBreaker(
+                cache=cache,
+                failure_cache_key=failure_cache_key,
+                failures_by_percentage=True,
+                max_percentage_failures=10,
+                max_accepted_failures=0,
+                max_failure_exception=MyException,
+                catch_exceptions=(ValueError,),
+            ) as circuit_breaker:
+                cache.set(failure_cache_key, max_failures)
+                circuit_breaker.open_circuit()
+
+                fail_function()
+
+        assert not cache.get(circuit_breaker.request_cache_key)
