@@ -64,8 +64,6 @@ class CircuitBreaker:
             issubclass(exc_type, exception_class)
             for exception_class in self.catch_exceptions
         ):
-            if self.is_circuit_open:
-                raise self.failure_exception
 
             self._increase_failure_count()
 
@@ -84,7 +82,10 @@ class CircuitBreaker:
                 raise self.failure_exception
 
     def _increase_failure_count(self):
-        if not self.rule.should_increase_failure_count():
+        if (
+            self.is_circuit_open or
+            not self.rule.should_increase_failure_count()
+        ):
             return
 
         # Between the cache.add and cache.incr, the cache MAY expire,

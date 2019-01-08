@@ -1,5 +1,6 @@
 import pytest
 from django.core.cache import caches
+from mock import mock
 
 from django_toolkit.fallbacks.circuit_breaker import CircuitBreaker
 from django_toolkit.fallbacks.circuit_breaker.rules import (
@@ -7,6 +8,8 @@ from django_toolkit.fallbacks.circuit_breaker.rules import (
     PercentageFailuresRule
 )
 from tests.fake.fallbacks.circuit_breaker.rules import (
+    FakeRuleShouldNotIncreaseFailure,
+    FakeRuleShouldNotIncreaseRequest,
     FakeRuleShouldNotOpen,
     FakeRuleShouldOpen
 )
@@ -27,10 +30,6 @@ def fail_function():
 
 
 class TestCircuitBreaker:
-
-    @pytest.fixture(autouse=True)
-    def clear_cache(self):
-        cache.clear()
 
     @pytest.fixture
     def failure_cache_key(self):
@@ -55,6 +54,28 @@ class TestCircuitBreaker:
         )
 
     @pytest.fixture
+    def rule_should_not_increase_failure(
+        self,
+        failure_cache_key,
+        request_cache_key
+    ):
+        return FakeRuleShouldNotIncreaseFailure(
+            failure_cache_key=failure_cache_key,
+            request_cache_key=request_cache_key,
+        )
+
+    @pytest.fixture
+    def rule_should_not_increase_request(
+        self,
+        failure_cache_key,
+        request_cache_key
+    ):
+        return FakeRuleShouldNotIncreaseRequest(
+            failure_cache_key=failure_cache_key,
+            request_cache_key=request_cache_key,
+        )
+
+    @pytest.fixture
     def max_failures_rule(self, failure_cache_key):
         return MaxFailuresRule(
             max_failures=3,
@@ -69,6 +90,12 @@ class TestCircuitBreaker:
             max_accepted_failures=2,
             request_cache_key=request_cache_key
         )
+
+    @pytest.fixture(autouse=True)
+    def clear_cache(self, request_cache_key, failure_cache_key):
+        cache.delete(request_cache_key)
+        cache.delete(failure_cache_key)
+        cache.delete('circuit_{}'.format(failure_cache_key))
 
     def test_success_result(self, rule_should_not_open):
         with CircuitBreaker(
@@ -170,6 +197,28 @@ class TestCircuitBreaker:
 
             assert circuit_breaker.is_circuit_open
 
+    def test_should_not_call_exit_when_circuit_is_open(
+        self,
+        rule_should_open,
+        failure_cache_key
+    ):
+        circuit_cache_key = 'circuit_{}'.format(failure_cache_key)
+        cache.set(circuit_cache_key, True)
+
+        with pytest.raises(MyException):
+            with mock.patch(
+                'django_toolkit.fallbacks.circuit_breaker.CircuitBreaker.__exit__'  # noqa
+            ) as exit:
+                with CircuitBreaker(
+                    rule=rule_should_open,
+                    cache=cache,
+                    failure_exception=MyException,
+                    catch_exceptions=(ValueError,),
+                ):
+                    success_function()
+
+        assert not exit.called
+
     def test_should_not_increment_fail_when_circuit_is_open(
         self,
         rule_should_open,
@@ -215,6 +264,42 @@ class TestCircuitBreaker:
                 fail_function()
 
         assert not cache.get(request_cache_key)
+
+    def test_should_not_increment_request_when_rule_is_false(
+        self,
+        rule_should_not_increase_request,
+        request_cache_key
+    ):
+        cache.set(request_cache_key, 5)
+
+        with pytest.raises(ValueError):
+            with CircuitBreaker(
+                rule=rule_should_not_increase_request,
+                cache=cache,
+                failure_exception=MyException,
+                catch_exceptions=(ValueError,),
+            ):
+                fail_function()
+
+        assert cache.get(request_cache_key) == 5
+
+    def test_should_not_increment_failure_when_rule_is_false(
+        self,
+        rule_should_not_increase_failure,
+        failure_cache_key
+    ):
+        cache.set(failure_cache_key, 5)
+
+        with pytest.raises(ValueError):
+            with CircuitBreaker(
+                rule=rule_should_not_increase_failure,
+                cache=cache,
+                failure_exception=MyException,
+                catch_exceptions=(ValueError,),
+            ):
+                fail_function()
+
+        assert cache.get(failure_cache_key) == 5
 
     def test_should_delete_count_key_when_circuit_is_open(
         self,
