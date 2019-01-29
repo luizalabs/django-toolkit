@@ -24,7 +24,7 @@ script:
   - make check coverage
 
 after_success:
-  - pip install codecov
+  - pip install codecov pyOpenSSL
   - codecov
 
 deploy:
