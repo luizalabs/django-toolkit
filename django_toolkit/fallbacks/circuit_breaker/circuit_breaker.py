@@ -90,9 +90,7 @@ class CircuitBreaker:
 
         # Between the cache.add and cache.incr, the cache MAY expire,
         # which will lead to a circuit that will eventually open
-        self.cache.add(
-            self.rule.failure_cache_key, 0, self.failure_timeout
-        )
+        self.cache.add(self.rule.failure_cache_key, 0, self.failure_timeout)
         total = self.cache.incr(self.rule.failure_cache_key)
 
         self.rule.log_increase_failures(
@@ -107,7 +105,8 @@ class CircuitBreaker:
         ):
             return
 
-        self.cache.add(
-            self.rule.request_cache_key, 0, self.failure_timeout
-        )
+        self.cache.add(self.rule.request_cache_key, 0, self.failure_timeout)
+        # To calculate the exact percentage, the cache of requests and the
+        # cache of failures must expire at the same time.
+        self.cache.add(self.rule.failure_cache_key, 0, self.failure_timeout)
         self.cache.incr(self.rule.request_cache_key)
