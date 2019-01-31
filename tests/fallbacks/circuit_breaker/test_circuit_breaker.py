@@ -326,14 +326,14 @@ class TestCircuitBreaker:
 
     def test_should_create_failure_cache_when_increase_request_count(
         self,
-        rule_should_not_increase_failure,
+        rule_should_not_open,
         failure_cache_key,
         request_cache_key,
     ):
         assert cache.get(failure_cache_key) is None
 
         with CircuitBreaker(
-            rule=rule_should_not_increase_failure,
+            rule=rule_should_not_open,
             cache=cache,
             failure_exception=MyException,
             catch_exceptions=(ValueError,),

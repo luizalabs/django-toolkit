@@ -108,5 +108,9 @@ class CircuitBreaker:
         self.cache.add(self.rule.request_cache_key, 0, self.failure_timeout)
         # To calculate the exact percentage, the cache of requests and the
         # cache of failures must expire at the same time.
-        self.cache.add(self.rule.failure_cache_key, 0, self.failure_timeout)
+        if self.rule.should_increase_failure_count():
+            self.cache.add(
+                self.rule.failure_cache_key, 0, self.failure_timeout
+            )
+
         self.cache.incr(self.rule.request_cache_key)
