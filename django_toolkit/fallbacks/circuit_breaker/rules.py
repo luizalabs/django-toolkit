@@ -88,10 +88,14 @@ class PercentageFailuresRule(Rule):
             'Increase failure for: {key} - '
             'max failures {max_failures_percentage}% - '
             'total failures {total_failures} - '
+            'min accepted requests {min_accepted_requests} - '
+            'total requests {total_requests} - '
             'percentage failures {percentage_failures}%'.format(
                 key=self.failure_cache_key,
                 max_failures_percentage=self.max_failures_percentage,
                 total_failures=total_failures,
+                min_accepted_requests=self.min_accepted_requests,
+                total_requests=total_requests,
                 percentage_failures=self._get_percentage_failures(
                     total_failures=total_failures,
                     total_requests=total_requests
