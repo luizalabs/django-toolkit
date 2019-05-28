@@ -1,9 +1,12 @@
+import mock
 import pytest
 
 from django_toolkit.concurrent.locks import (
     CacheLock,
     LocalMemoryLock,
-    LockActiveError
+    LockAcquireError,
+    LockActiveError,
+    LockReleaseError
 )
 
 
@@ -102,3 +105,29 @@ class TestCacheLock:
         with CacheLock(key='test', delete_on_exit=True) as lock:
             pass
         assert not lock.cache.get(lock._key)
+
+    def test_should_raise_an_exception_when_an_error_happens_on_acquire_lock(
+        self
+    ):
+        lock = CacheLock(key='test')
+        with mock.patch.object(
+            lock.cache,
+            'add',
+            side_effect=Exception('oops')
+        ):
+            with pytest.raises(LockAcquireError):
+                with lock:
+                    pass
+
+    def test_should_raise_an_exception_when_an_error_happens_on_release_lock(
+        self
+    ):
+        lock = CacheLock(key='test')
+        with mock.patch.object(
+            lock.cache,
+            'delete',
+            side_effect=Exception('oops')
+        ):
+            with pytest.raises(LockReleaseError):
+                with lock:
+                    pass
