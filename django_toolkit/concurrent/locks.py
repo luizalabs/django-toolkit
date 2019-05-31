@@ -6,6 +6,14 @@ class LockActiveError(Exception):
     pass
 
 
+class LockAcquireError(Exception):
+    pass
+
+
+class LockReleaseError(Exception):
+    pass
+
+
 class Lock(object):
 
     def __init__(self):
@@ -56,7 +64,12 @@ class CacheLock(Lock):
         self.delete_on_exit = delete_on_exit
 
     def __enter__(self):
-        self.active = self.cache.add(self._key, True, self._expire)
+        try:
+            self.active = self.cache.add(self._key, True, self._expire)
+        except Exception as e:
+            raise LockAcquireError(
+                'Could not acquire a lock. Caused by: {}'.format(e)
+            )
 
         if not self.active and self.raise_exception:
             raise LockActiveError('For key {key}'.format(key=self._key))
@@ -65,6 +78,11 @@ class CacheLock(Lock):
 
     def __exit__(self, *args, **kwargs):
         if self.active and self.delete_on_exit:
-            self.cache.delete(self._key)
+            try:
+                self.cache.delete(self._key)
+            except Exception as e:
+                raise LockReleaseError(
+                    'Could not release a lock. Caused by: {}'.format(e)
+                )
 
         self.active = False
