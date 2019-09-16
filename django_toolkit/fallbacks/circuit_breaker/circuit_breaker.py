@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import inspect
 import logging
+from functools import wraps
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +82,13 @@ class CircuitBreaker:
 
                 raise self.failure_exception
 
+    def __call__(self, func):
+        @wraps(func)
+        def inner(*args, **kwargs):
+            with self:
+                return func(*args, **kwargs)
+        return inner
+
     def _increase_failure_count(self):
         if (
             self.is_circuit_open or
@@ -114,3 +122,6 @@ class CircuitBreaker:
             )
 
         self.cache.incr(self.rule.request_cache_key)
+
+
+circuit_breaker = CircuitBreaker
