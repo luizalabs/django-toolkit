@@ -6,6 +6,22 @@ An implementation of [Circuit Breaker](http://martinfowler.com/bliki/CircuitBrea
 
 #### class CircuitBreaker(rule, cache, failure_exception, failure_timeout=None, circuit_timeout=None, catch_exceptions=None)
 
+You can use the circuit break with a context manager or a decorator
+
+```python
+from django_toolkit.failures.circuit_breaker import CircuitBreaker
+
+with CircuitBreaker():
+```
+
+```python
+from django_toolkit.failures.circuit_breaker import circuit_breaker
+
+@circuit_breaker()
+def some_func():
+    pass
+```
+
 #### Arguments
 
 `rule`

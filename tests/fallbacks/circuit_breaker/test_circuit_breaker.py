@@ -2,7 +2,10 @@ import pytest
 from django.core.cache import caches
 from mock import mock
 
-from django_toolkit.fallbacks.circuit_breaker import CircuitBreaker
+from django_toolkit.fallbacks.circuit_breaker import (
+    CircuitBreaker,
+    circuit_breaker
+)
 from django_toolkit.fallbacks.circuit_breaker.rules import (
     MaxFailuresRule,
     PercentageFailuresRule
@@ -106,6 +109,18 @@ class TestCircuitBreaker:
         ):
             success_function()
 
+    def test_success_result_with_decorator(self, rule_should_not_open):
+        @circuit_breaker(
+            rule=rule_should_not_open,
+            cache=cache,
+            failure_exception=None,
+            catch_exceptions=None,
+        )
+        def inner_func():
+            success_function()
+
+        inner_func()
+
     def test_should_raise_error(self, rule_should_open):
         with pytest.raises(MyException):
             with CircuitBreaker(
@@ -115,6 +130,19 @@ class TestCircuitBreaker:
                 catch_exceptions=(ValueError,),
             ):
                 fail_function()
+
+    def test_should_raise_error_with_decorator(self, rule_should_open):
+        @circuit_breaker(
+            rule=rule_should_open,
+            cache=cache,
+            failure_exception=MyException,
+            catch_exceptions=(ValueError,),
+        )
+        def inner():
+            fail_function()
+
+        with pytest.raises(MyException):
+            inner()
 
     def test_should_increase_fail_cache_count(
         self,
