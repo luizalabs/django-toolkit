@@ -1,12 +1,14 @@
 -e .
 bumpversion==0.5.3
-django-oauth-toolkit==1.2.0
-djangorestframework==3.10.3
+django-oauth-toolkit==1.0.0
+djangorestframework==3.8.2
 flake8==3.7.8
 isort==4.3.21
 mkdocs==1.0.4
-mock==3.0.5
+mock==2.0.0
 model-mommy==1.6.0
-pytest-cov==2.8.1
-pytest-django==3.5.1
-pytest==5.2.1
+pytest-cov==2.6.0
+pytest-django==3.4.3
+pytest==3.8.2; python_version == '2.7'
+pytest==4.6.6; python_version == '3.4'
+pytest==5.2.1; python_version > '3.4'
