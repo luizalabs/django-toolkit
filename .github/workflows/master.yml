@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["2.7"]
-        dependency: ["django","none"]
+        dependency: ["django"]
     runs-on: ubuntu-20.04
     container:
       image: python:${{ matrix.python-version }}-slim
