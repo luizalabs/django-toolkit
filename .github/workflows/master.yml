@@ -24,7 +24,7 @@ jobs:
       
     - name: Install dependencies
       run: |
-        if [ ${{ matrix.dependency }} == django ]; then pip install Django<2.2; fi
+        # if [ ${{ matrix.dependency }} == django ]; then pip install Django<2.2; fi
         pip install -r requirements-dev.txt
         pip install codecov pyOpenSSL
 
