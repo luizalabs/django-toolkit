@@ -99,7 +99,12 @@ class CircuitBreaker:
         # Between the cache.add and cache.incr, the cache MAY expire,
         # which will lead to a circuit that will eventually open
         self.cache.add(self.rule.failure_cache_key, 0, self.failure_timeout)
-        total = self.cache.incr(self.rule.failure_cache_key)
+        total = 0
+        try:
+            total = self.cache.incr(self.rule.failure_cache_key)
+        except ValueError:
+            logger.warning('Key {key} expired!'
+                           .format(key=self.rule.failure_cache_key))
 
         self.rule.log_increase_failures(
             total_failures=total,
@@ -121,7 +126,11 @@ class CircuitBreaker:
                 self.rule.failure_cache_key, 0, self.failure_timeout
             )
 
-        self.cache.incr(self.rule.request_cache_key)
+        try:
+            self.cache.incr(self.rule.request_cache_key)
+        except ValueError:
+            logger.warning('Key {key} expired!'
+                           .format(key=self.rule.request_cache_key))
 
 
 circuit_breaker = CircuitBreaker
