@@ -27,6 +27,7 @@ jobs:
       run: |
         # if [ ${{ matrix.dependency }} == django ]; then pip install Django<2.2; fi
         pip install -r requirements-dev.txt
+        pip install codecov pyOpenSSL wheel
 
 
     - name: Run tests
@@ -35,8 +36,7 @@ jobs:
         codecov
 
     - name: Build
-      run: |
-        pip install -U pip wheel setuptools 
+      run:
         python setup.py sdist bdist_wheel
     
     - name: Publish a Python distribution to PyPI
