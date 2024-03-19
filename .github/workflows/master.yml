@@ -15,7 +15,6 @@ jobs:
     strategy:
       matrix:
         python-version: ["2.7"]
-        dependency: ["django"]
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v4
@@ -28,7 +27,7 @@ jobs:
       run: |
         # if [ ${{ matrix.dependency }} == django ]; then pip install Django<2.2; fi
         pip install -r requirements-dev.txt
-        pip install codecov pyOpenSSL
+        pip install codecov pyOpenSSL wheel
 
 
     - name: Run tests
