@@ -27,7 +27,6 @@ jobs:
       run: |
         # if [ ${{ matrix.dependency }} == django ]; then pip install Django<2.2; fi
         pip install -r requirements-dev.txt
-        pip install -U pip wheel setuptools
 
 
     - name: Run tests
@@ -36,7 +35,8 @@ jobs:
         codecov
 
     - name: Build
-      run:
+      run: |
+        pip install -U pip wheel setuptools 
         python setup.py sdist bdist_whee
     
     - name: Publish a Python distribution to PyPI
